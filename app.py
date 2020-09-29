@@ -37,7 +37,16 @@ def process():
         req = requests.get(url)
     except Exception as e:
         return redirect('/?error='+base64.b64encode(str(e).encode()).decode())
-    return req.text
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    x = (s.getsockname()[0])
+    s.close()
+    return f'''it works {x}
+    <form method="POST">
+        <input name="url">
+        <button>Submit</button>
+    </form>
+    '''+req.text
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",port="80")
